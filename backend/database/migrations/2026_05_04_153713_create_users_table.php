@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('profil_picture')->nullable();
             $table->enum('role',['user','admin'])->default('user');
             $table->enum('status',['active','banned'])->default('active');
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps() ;
         });
 
@@ -27,5 +28,5 @@ return new class extends Migration {
 }
 ?>
 
-us']
+
  
