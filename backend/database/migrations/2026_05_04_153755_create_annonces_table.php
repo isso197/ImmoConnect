@@ -9,15 +9,15 @@
             Schema::create('annonces', function(Blueprint $table){
                 $table->id() ;
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
-                $table->string('titre');
-                $table->enum('type_bien',['appartement','maison','terrain'])->default('appartement');
-                $table->enum('type_offre',['vente','location'])->default('vente');
-                $table->decimal('prix',15,2);
-                $table->string('ville');
+                $table->string('title');
+                $table->enum('property_type',['appartement','maison','terrain'])->default('appartement');
+                $table->enum('listing_type',['vente','location'])->default('vente');
+                $table->decimal('price',15,2);
+                $table->string('city');
                 $table->string('address')->nullable();
-                $table->float('surface');
-                $table->integer('nb_chambre')->nullable();
-                $table->integer('nb_salles_bain')->nullable();
+                $table->float('surface_area');
+                $table->integer('rooms')->nullable();
+                $table->integer('bathrooms')->nullable();
                 $table->enum('status',['en_attente','validee','refusee','supprimee'])->default('en_attente');
                 $table->timestamps();
             });

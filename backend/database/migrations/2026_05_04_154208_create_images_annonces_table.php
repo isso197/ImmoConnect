@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('images_annonces', function (Blueprint $table) {
             $table->id();
             $table->foreignId('annonce_id')->constrained()->onDelete('cascade');
-            $table->string('chemin_fichier');
+            $table->string('image_path');
             $table->integer('ordre')->default(0);
             $table->timestamps() ;
         });

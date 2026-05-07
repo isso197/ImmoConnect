@@ -9,13 +9,14 @@ return new class extends Migration {
     public function up():void{
         Schema::create('users',function(Blueprint $table) {
             $table->id();
-            $table->string('nom_complet') ;
+            $table->string('full_name') ;
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('telephone');
-            $table->string('ville')->nullable();
-            $table->string('photo_profil')->nullable();
-            $table->enum('status',['user','admin'])->default('user');
+            $table->string('phone');
+            $table->string('city')->nullable();
+            $table->string('profil_picture')->nullable();
+            $table->enum('role',['user','admin'])->default('user');
+            $table->enum('status',['active','banned'])->default('active');
             $table->timestamps() ;
         });
 
@@ -25,3 +26,6 @@ return new class extends Migration {
     }
 }
 ?>
+
+us']
+ 

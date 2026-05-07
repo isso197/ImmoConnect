@@ -2,48 +2,126 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
+use App\Models\Annonce;
+use App\Models\Demande;
+use App\Models\Favori;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
+    protected $fillable =[
+        'full_name',
         'email',
         'password',
+        'phone',
+        'city',
+        'profil_picture',
+        'role',
+        'status'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $casts=[
+        'created_at'=>'datetime',
+        'updated_at'=>'datetime'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    public function annonces (){
+        return $this->hasMany(Annonce::class);
+    }
+
+    public function demandes (){
+        return $this->hasMany(Demande::class);
+    }
+    public function favoris (){
+        return $this->hasMany(Favori::class);
+    }
+
+    //scopes 
+
+    public function scopeCity($query , $value){
+        return $query->where('city',$value);
+    }
+    
+    public function scopeStatus($query , $value){
+        return $query->where('status',$value);
+    }
+    public function scopeRole($query,$value){
+        return $query->where('role',$value);
+    }
+
+    public function scopeSearch($query , $value){
+        return $query->where('full_name', 'like', "%$value%");
+    }
+    public function scopeRecent($query){
+        return $query->orderBy('created_at','desc');
+    }
+
+    //Accessors
+
+    public function getIsAdminAttribute(){
+        return $this->role === 'admin';
+    }
+
+    public function getPhotoProfilUrlAttribute(){
+        return $this->profil_picture 
+        ? asset('storage/'. $this->profil_picture) 
+        : asset('images/default.png');
+    }
+    //here there is an other version of two letters we may think about 
+    public function getAvatarInitialAttribute(){
+        return $this->full_name 
+        ? strtoupper(substr($this->full_name , 0 , 1))
+        : '?';
+    }
+
+    //Mutators : changes the data before it gets stored 
+
+    public function setFullNameAttribute($value){
+        $this->attributes['full_name']= trim(ucwords(strtolower($value)));
+    }
+    public function setEmailAttribute($value){
+        $this->attributes['email'] = trim(strtolower($value));
+    }
+    public function setPhoneAttribute($value){
+        $this->attributes['phone'] = trim('+212'.ltrim($value,'0'));
+    }
+    public function setCityAttribute($value){
+        $this->attributes['city'] = trim(ucwords(strtolower($value)));
+    }
+    /*
+    this one is optionnal handeled in upload logic
+    /////public function setPhotoProfilAttribute($value){
+        $this->attributes['photo_profil'] = trim($value);
+    }
+    */
+    public function setStatusAttribute($value){
+        $this->attributes['status'] = trim(strtolower($value));
+    }
+
+    public function setRoleAttribute($value){
+        $this->attributes['role'] = trim(strtolower($value));
+    }  
+
+    //buisness models 
+
+    public function isAdmin(){
+        return $this->role==='admin';
+    }
+    public function isBanned(){
+        return $this->status==='banned';
+    }
+    public function canPostAnnonce(){
+        return $this->role==='user' || $this->role==='admin';
+    } 
+    public function ownsAnnonce($annonce){
+        return $this->id === $annonce->user_id;
+    }
+    public function canLogin(){
+        return $this->status !== 'banned';
     }
 }
+

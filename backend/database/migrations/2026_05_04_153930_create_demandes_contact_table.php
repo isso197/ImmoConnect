@@ -10,11 +10,12 @@
                 $table->id();
                 $table->foreignId('annonce_id')->constrained()->onDelete('cascade');
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
-                $table->string('nom_contact');
-                $table->string('telephone_contact');
+                $table->string('contact_name');
+                $table->string('contact_phone');
                 $table->text('message');
                 $table->enum('status',['en_attente','acceptee','refusee'])->default('en_attente');
-                $table->text('note_admin')->nullable() ;
+                $table->text('admin_note')->nullable();
+                $table->boolean('is_read')->default(0);
                 $table->timestamps();
             });
         }
@@ -23,3 +24,5 @@
         } 
     }
 ?>
+
+        
