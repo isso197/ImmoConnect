@@ -6,14 +6,12 @@ use App\Models\Annonce;
 use App\Models\Demande;
 use App\Models\Favori;
 
-use Laravel\Sanctum\HasApiTokens;        
-use Illuminate\Notifications\Notifiable; 
-use Illuminate\Database\Eloquent\Factories\HasFactory; 
-use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authentificatable
+class User extends Model
 {
-    use HasFactory , HasApiTokens , Notificatable;
+    use HasFactory;
 
     protected $fillable =[
         'full_name',
@@ -31,7 +29,7 @@ class User extends Authentificatable
         'updated_at'=>'datetime'
     ];
 
-    public function annonces(){
+    public function annonces (){
         return $this->hasMany(Annonce::class);
     }
 
