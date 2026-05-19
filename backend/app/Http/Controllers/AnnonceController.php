@@ -7,17 +7,17 @@ use App\Models\Annonce;
 
 class AnnonceController extends Controller
 {
-    public function index(){
+    public function indexPagination(){
         return response()->json([
             "status"=>"success",
-            "data"=>Annonce::all()
+            "data"=>Annonce::with('user')->latest()->paginate(10)
         ]);
     }
 
     public function show(Annonce $annonce){
         return response()->json([
             "status"=>"success",
-            "data"=>$annonce
+            "data"=>$annonce->load('user')
         ]);
     }
 
@@ -30,7 +30,8 @@ class AnnonceController extends Controller
             "city"=>"required|string|max:255",
             "address"=>"nullable|string|max:255",
             "rooms"=>"nullable|numeric",
-            "bathrooms"=>"nullable|numeric"
+            "bathrooms"=>"nullable|numeric",
+            "surface_area"=>"required|numeric",
         ]);
         $validated['user_id'] = $request->user()->id;
 
@@ -45,7 +46,7 @@ class AnnonceController extends Controller
     public function update(Request $request , Annonce $annonce){
 
         //not any user could update
-        if($request->user()->id !== $annonce->user_id){
+        if($request->user()->id !== $annonce->user_id && $request->user()->role !=="admin"){
             return response()->json([
                 "message"=>"Unauthorised"
             ],403);
@@ -56,7 +57,7 @@ class AnnonceController extends Controller
             "property_type"=>"sometimes|in:appartement,maison,terrain",
             "listing_type"=>"sometimes|in:vente,location",
             "price"=>"sometimes|numeric",
-            "city"=>"sometimes|string|max:255"
+            "city"=>"sometimes|string|max:255",
             "address"=>"nullable|string|max:255",
             "rooms"=>"nullable|numeric",
             "bathrooms"=>"nullable|numeric"
@@ -70,9 +71,9 @@ class AnnonceController extends Controller
         ]);
     }
 
-    public function destroy(Annonce $annonce){
+    public function destroy(Request $request ,Annonce $annonce){
 
-        if($request->user()->id !== $annonce->user_id){
+        if($request->user()->id !== $annonce->user_id && $request->user()->role !=="admin"){
             return response()->json([
                 "message"=>"Unauthorised"
             ],403);
@@ -80,20 +81,9 @@ class AnnonceController extends Controller
 
         $annonce->delete();
         return response()->json([
-            "success"=>true,
+            "success"=>"success",
             "message"=>"annonce well deleted"
         ]);
     }
 
-    public function latest(){
-        $annonces = Annonce::latest()->get();
-        return response()->json([
-            "success"=>true,
-            "data"=>$annonces
-        ]);
-
-    }
 }
-
-
-

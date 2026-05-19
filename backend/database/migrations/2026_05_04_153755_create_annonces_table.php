@@ -8,7 +8,7 @@
         public function up():void{
             Schema::create('annonces', function(Blueprint $table){
                 $table->id() ;
-                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
                 $table->string('title');
                 $table->enum('property_type',['appartement','maison','terrain'])->default('appartement');
                 $table->enum('listing_type',['vente','location'])->default('vente');

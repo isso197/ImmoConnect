@@ -8,6 +8,7 @@ use App\Models\Annonce;
 
 class FavoriController extends Controller
 {
+    /*(the user controller already has this one)
     public function index(Request $request){
         $favoris = Favori::where("user_id",$request->user()->id);
         return response()->json([
@@ -16,7 +17,7 @@ class FavoriController extends Controller
             "data"=>$favoris
         ]);
     }
-
+*/
     public function store(Request $request, Annonce $annonce){
 
         $exists = Annonce::where('user_id',$request->user()->id)->where('annonce_id',  $annonce->id)->exists();
@@ -24,7 +25,7 @@ class FavoriController extends Controller
         if($exists){
             return response()->json([
                 "success"=>false,
-                "message"=>"the annonce is already in favorus"
+                "message"=>"the annonce is already in favoris"
             ]);
         }
 
@@ -40,13 +41,13 @@ class FavoriController extends Controller
         ]); 
     }
 
-    public function delete(Request $request , Annonce $annonce){
+    public function destroy(Request $request , Annonce $annonce){
 
         $favori = Favori::where('user_id',$request->user()->id)->where("annonce_id",$annonce->id)->first();
         if(!$favori){
             return response()->json([
                 "success"=>false,
-                "message"=>"the annonce is not already deleted"
+                "message"=>"the annonce is  already deleted"
             ]);
         }
 
@@ -57,4 +58,3 @@ class FavoriController extends Controller
         ]);
     }
 }
-

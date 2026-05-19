@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\DemandeContact;
+use App\Models\User;
 
 
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 
 class DemandeContactController extends Controller
 {
-    public function index(Request $request){
+    public function indexPagination(Request $request){
         $query = DemandeContact::with('user','annonce')->latest();
         if($request->user()->role !== "admin"){
             $query->where('user_id',$request->user()->id);
@@ -20,6 +21,33 @@ class DemandeContactController extends Controller
         ]);
     }
 
+    public function store(Request $request){
+        
+        $validated = $request->validate([
+            "contact_name"=>"required|string|max:255",
+            "contact_phone"=>"required|string",
+            "message"=>"required|string|max:1000",
+            "annonce_id"=>"required|exists:annonces,id"
+        ]);
+        $validated["user_id"] = $request->user()->id;
+        $exists = DemandeContact::where("user_id",$request->user()->id)->where("annonce_id",$request->annonce_id)->where("status","en_attente")->exists(); 
+        if($exists){
+            return response()->json([
+                "success"=>false,
+                "message"=>"demande already sent"
+            ]);
+        }
+
+        $demande = DemandeContact::create($validated);
+
+        return response()->json([
+            "success"=>true,
+            "data"=>$demande,
+            "message"=>"new contact request created"
+        ]);
+    }
+
+    
 
     public function show(Request $request ,DemandeContact $demande){
         if($request->user()->role !== "admin" && $request->user()->id !== $demande->user_id ){
@@ -85,4 +113,3 @@ class DemandeContactController extends Controller
         ]);
     }
 }
-

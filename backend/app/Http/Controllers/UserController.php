@@ -12,13 +12,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(){
-        return response()->json([
-            "status"=>"success",
-            "data"=>User::all()
-        ]);
-    }
-
     public function indexPagination(){
         $users = User::recent()->paginate(10);
         return response()->json([
@@ -46,7 +39,7 @@ class UserController extends Controller
             $validated = $request->validate([
                 "full_name"=>"sometimes|string|max:255",
                 "email"=>"sometimes|email|unique:users,email,".$user->id,
-                "phone"=>"sometimes|numeric",
+                "phone"=>"sometimes|string",
                 "city"=>"sometimes|string",
                 "password"=>"sometimes|min:6"
             ]);
