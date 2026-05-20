@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -21,9 +23,7 @@ class AuthController extends Controller
         $validated["password"]=bcrypt($validated["password"]);
 
         $user = User::create($validated);
-
-
-        //the plainTextToken is an attribute , it is the string forma of the token readble by the user  , gonna be returned one time .
+        
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        $token = createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             "status"=>"success",

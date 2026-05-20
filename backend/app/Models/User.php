@@ -11,9 +11,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory; 
 use Illuminate\Foundation\Auth\User as Authenticatable; 
 
-class User extends Authentificatable
+class User extends Authenticatable
 {
-    use HasFactory , HasApiTokens , Notificatable;
+    use HasFactory , HasApiTokens , Notifiable;
 
     protected $fillable =[
         'full_name',

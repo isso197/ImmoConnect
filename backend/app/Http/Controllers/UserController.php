@@ -6,18 +6,23 @@ use App\Models\User;
 use App\Models\Annonce;
 use App\Models\Favori;
 
-use SoftDeletes;
 
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+ 
+        public function index()
+        {
+            dd("CONTROLLER REACHED");
+        } 
+        
     public function indexPagination(){
         $users = User::recent()->paginate(10);
         return response()->json([
             "status"=>"success",
             "data"=>$users
-        ])
+        ]);
     }
 
     public function me(Request $request){
@@ -35,23 +40,28 @@ class UserController extends Controller
     }
 
     public function update(Request $request , User $user){
-        if($user->role !== 'admin'){
-            $validated = $request->validate([
-                "full_name"=>"sometimes|string|max:255",
-                "email"=>"sometimes|email|unique:users,email,".$user->id,
-                "phone"=>"sometimes|string",
-                "city"=>"sometimes|string",
-                "password"=>"sometimes|min:6"
-            ]);
-            if(isset($validated["password"])){
-                $validated["password"]=bcrypt($validated["password"]);
-            }
-            $user->update($validated);
-
+    if($request->user()->id !== $user->id && $request->user()->role !== 'admin')
+        {             
             return response()->json([
-                "status"=>"success",
+                "success"=>false,
+                "message"=>"only user can update his info"
             ],403);
         }
+        $validated = $request->validate([
+            "full_name"=>"sometimes|string|max:255",
+            "email"=>"sometimes|email|unique:users,email,".$user->id,
+            "phone"=>"sometimes|string",
+            "city"=>"sometimes|string",
+            "password"=>"sometimes|min:6"
+        ]);
+        if(isset($validated["password"])){
+            $validated["password"] = bcrypt($validated["password"]);
+        }
+            $user->update($validated);
+            return response()->json([
+                "status"=>"success",
+            ]);
+        
     }
     /*this is also good 
     public function destroy($id){

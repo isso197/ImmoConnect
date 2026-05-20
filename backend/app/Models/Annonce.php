@@ -16,6 +16,8 @@ class Annonce extends Model
 
     use HasFactory;
 
+    protected $table = 'annonces';
+
     protected $fillable = [
         'title',
         'property_type',
