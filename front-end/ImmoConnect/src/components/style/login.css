@@ -1,0 +1,9 @@
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+.ethereal-gradient {
+  background: linear-gradient(135deg, #630ed4 0%, #7c3aed 100%);
+}
