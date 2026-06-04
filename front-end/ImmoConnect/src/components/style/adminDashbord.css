@@ -1,0 +1,96 @@
+.primary-gradient {
+  background: linear-gradient(
+    135deg,
+    #630ed4 0%,
+    #7c3aed 100%
+  );
+}
+
+.table-head {
+  padding: 16px 24px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #f3e8ff;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.filter-btn:hover {
+  background: #7c3aed;
+  color: white;
+}
+
+.filter-active {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #630ed4;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-success {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #b45309;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge-danger {
+  background: #ffe4e6;
+  color: #be123c;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.action-btn {
+  padding: 8px;
+  border-radius: 8px;
+  color: #94a3b8;
+  transition: 0.3s;
+}
+
+.action-btn:hover {
+  background: #f8f1ff;
+}
+
+.page-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-btn:hover {
+  background: #f3e8ff;
+}
+
+.active-page {
+  background: #630ed4;
+  color: white;
+}
