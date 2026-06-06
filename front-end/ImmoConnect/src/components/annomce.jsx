@@ -97,9 +97,7 @@ export default function PropertyDetails() {
                   className="w-full h-full object-cover"
                 />
 
-                <div className="absolute inset-0 bg-violet-700/50 flex items-center justify-center text-white font-bold text-xl">
-                  +4 Photos
-                </div>
+            
               </div>
             </div>
           </div>
