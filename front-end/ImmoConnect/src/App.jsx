@@ -5,6 +5,9 @@ import Aide from './components/aide'
 import PropertyDetails from './components/annomce'
 import AdminUsers from './components/gestionUser'
 import ContactRequests from './components/ContactRequests'
+import Messages from './components/message'
+import Dashboard from './components/dashborduser'
+
 
 
 
@@ -13,7 +16,7 @@ import ContactRequests from './components/ContactRequests'
 function App() {
   return (
     <>
-      <ContactRequests />
+      <Dashboard />
     </>
   )
 }
