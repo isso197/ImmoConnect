@@ -7,6 +7,8 @@ import AdminUsers from './components/gestionUser'
 import ContactRequests from './components/ContactRequests'
 import Messages from './components/message'
 import Dashboard from './components/dashborduser'
+import Favorites from './components/favories'
+
 
 
 
@@ -16,7 +18,7 @@ import Dashboard from './components/dashborduser'
 function App() {
   return (
     <>
-      <Dashboard />
+      <Favorites />
     </>
   )
 }
